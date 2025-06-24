@@ -1,0 +1,14 @@
+[position_sizing]
+max_capital_utilization = 0.3  # 30% of capital
+per_trade_risk = 0.005  # 0.5%
+leverage = 1.0
+
+[signal_adjustments]
+sentiment_weight = 0.4
+technical_weight = 0.5
+on_chain_weight = 0.1
+negative_threshold = 0.3  # More sensitive to bad news
+
+[circuit_breakers]
+max_daily_loss = -0.03  # Tighter loss limit
+volatility_shutdown = 0.10

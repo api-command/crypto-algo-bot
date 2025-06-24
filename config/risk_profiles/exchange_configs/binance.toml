@@ -1,0 +1,52 @@
+[api]
+base_url = "https://api.binance.com"
+ws_url = "wss://stream.binance.com:9443/ws"
+futures_url = "https://fapi.binance.com"
+rate_limit = 1200  # req/min
+weight_limit = 1200 # weight/min
+
+[authentication]
+signature_version = "v2"  # v2 for HMAC SHA256
+timestamp_window = 5000   # ms
+
+[fees]
+maker_fee = 0.0002  # 0.02%
+taker_fee = 0.0004  # 0.04%
+bnb_discount = true  # Pay fees with BNB for 25% discount
+
+[order_params]
+min_order_size = {
+  "BTCUSDT": 0.00001,
+  "ETHUSDT": 0.001,
+  "SOLUSDT": 0.01
+}
+price_precision = {
+  "BTCUSDT": 2,
+  "ETHUSDT": 2,
+  "SOLUSDT": 4
+}
+quantity_precision = {
+  "BTCUSDT": 5,
+  "ETHUSDT": 3,
+  "SOLUSDT": 1
+}
+
+[latency_optimization]
+use_batch_orders = true
+max_orders_per_batch = 5
+ping_interval = 300  # seconds
+auto_reconnect = true
+
+[advanced]
+supported_order_types = [
+  "LIMIT", 
+  "MARKET", 
+  "STOP_LOSS_LIMIT", 
+  "TAKE_PROFIT_LIMIT",
+  "ICEBERG"
+]
+dust_conversion = true  # Auto-convert dust balances to BNB
+
+[market_data]
+depth_stream = "@depth@100ms"  # 100ms order book updates
+kline_intervals = ["1m", "5m", "15m"]

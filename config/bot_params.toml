@@ -1,0 +1,27 @@
+[general]
+log_level = "DEBUG"  # DEBUG, INFO, WARNING
+base_currency = "USD"
+assets = ["BTC", "ETH", "SOL", "AVAX"]
+heartbeat_interval = 5000  # ms
+
+[execution]
+default_exchange = "coinbase_pro"
+slippage_tolerance = 0.0015  # 0.15%
+latency_cutoff = 100  # ms
+
+[sentiment]
+sources = ["alpha_vantage", "twitter", "coindesk"]
+positive_threshold = 0.75
+
+[signals]
+weights = [
+  { type = "sentiment", weight = 0.6 },
+  { type = "technical", weight = 0.3 },
+  { type = "on_chain", weight = 0.1 }
+]
+rebalance_frequency = "1h"  # Recalculate weights
+
+[circuit_breakers]
+max_daily_loss = -0.05  # -5%
+max_position_risk = 0.1  # 10% capital
+volatility_shutdown = 0.15  # 15% 5m volatility

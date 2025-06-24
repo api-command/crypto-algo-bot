@@ -1,0 +1,8 @@
+[position_sizing]
+max_capital_utilization = 0.7
+per_trade_risk = 0.015
+leverage = 3.0
+
+[signal_adjustments]
+sentiment_weight = 0.7
+positive_threshold = 0.8  # Require stronger signals

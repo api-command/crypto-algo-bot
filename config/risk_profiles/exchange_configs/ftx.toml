@@ -1,0 +1,45 @@
+[api]
+base_url = "https://ftx.com/api"
+ws_url = "wss://ftx.com/ws"
+rate_limit = 30  # req/second
+weight_limit = 3000 # points/10s
+
+[authentication]
+signature_version = "v1"  # HMAC SHA256
+subaccount_support = true
+
+[fees]
+maker_fee = 0.0002  # 0.02%
+taker_fee = 0.0007  # 0.07%
+volume_tiers = [
+  { volume = 1000000, maker = 0.00015, taker = 0.0006 },
+  { volume = 5000000, maker = 0.0001, taker = 0.00055 }
+]
+
+[order_params]
+min_order_size = {
+  "BTC-PERP": 0.0001,
+  "ETH-PERP": 0.001,
+  "SOL-PERP": 0.1
+}
+price_increment = {
+  "BTC-PERP": 1.0,
+  "ETH-PERP": 0.05,
+  "SOL-PERP": 0.01
+}
+
+[latency_optimization]
+use_udp = true
+compression = "zstd"
+heartbeat_interval = 15  # seconds
+
+[risk_controls]
+auto_liquidation_buffer = 0.05  # 5% above liquidation price
+position_size_limits = {
+  "BTC-PERP": 1000,  # Max contracts
+  "ETH-PERP": 5000,
+  "SOL-PERP": 10000
+}
+
+# Note: FTX is defunct - this config is for historical reference only
+# Consider replacing with Bybit or OKX config in production

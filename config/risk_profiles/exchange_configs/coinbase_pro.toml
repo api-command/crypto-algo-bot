@@ -1,0 +1,27 @@
+[api]
+base_url = "https://api.pro.coinbase.com"
+ws_url = "wss://ws-feed.pro.coinbase.com"
+rate_limit = 100  # req/second
+
+[fees]
+maker_fee = 0.004
+taker_fee = 0.006
+volume_tiers = [
+  { volume = 10000000, maker = 0.003, taker = 0.005 },
+  { volume = 50000000, maker = 0.002, taker = 0.004 }
+]
+
+[order_params]
+min_order_size = {
+  "BTC": 0.001,
+  "ETH": 0.01,
+  "SOL": 1.0
+}
+price_increment = {
+  "BTC": 0.01,
+  "ETH": 0.001
+}
+
+[latency_optimization]
+use_coiled_ws = true  # Use pre-coiled WebSockets
+pre_emptive_ack = true
