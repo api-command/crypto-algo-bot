@@ -1,6 +1,14 @@
+import os
+import numpy as np
+import toml
+from src.utils.config_loader import config_loader
+from src.utils.logger import get_logger
+
+logger = get_logger('risk_manager')
+
 def load_risk_profile(profile_name):
     config_path = f"config/risk_profiles/{profile_name}.toml"
-    return toml.load(config_path)
+    return config_loader.load_toml(config_path)
 
 class RiskManager:
     def __init__(self):
