@@ -1,0 +1,9 @@
+[position_sizing]
+per_trade_risk = 0.02
+max_position_size = 0.1
+volatility_factor = 0.5
+
+[stop_loss]
+default_stop = 0.02
+trailing_stop = true
+max_loss = 0.05
