@@ -1,6 +1,32 @@
+import os
+import ccxt
+import toml
+from src.utils.config_loader import config_loader
+from src.utils.logger import get_logger
+
+logger = get_logger('execution_engine')
+
+def decrypt_key(exchange_name, key_type):
+    """Get decrypted API key from environment"""
+    env_map = {
+        'coinbase_pro': {
+            'api_key': 'COINBASE_PRO_API_KEY',
+            'api_secret': 'COINBASE_PRO_API_SECRET',
+            'passphrase': 'COINBASE_PRO_PASSPHRASE'
+        },
+        'binance': {
+            'api_key': 'BINANCE_API_KEY',
+            'api_secret': 'BINANCE_API_SECRET'
+        }
+    }
+    
+    if exchange_name in env_map and key_type in env_map[exchange_name]:
+        return os.getenv(env_map[exchange_name][key_type], '')
+    return ''
+
 def load_exchange_config(exchange_name):
     config_path = f"config/exchange_configs/{exchange_name}.toml"
-    return toml.load(config_path)
+    return config_loader.load_toml(config_path)
 
 class ExecutionEngine:
     def __init__(self, exchange_name):
