@@ -6,7 +6,6 @@ pytz==2023.3
 
 # Trading & Market Data  
 ccxt==4.1.90  
-ccxt-pro==0.9.77  
 pandas==2.1.0  
 numpy==1.26.0  
 scipy==1.11.2  
