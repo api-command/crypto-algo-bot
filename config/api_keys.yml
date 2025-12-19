@@ -1,25 +1,46 @@
-# Master encryption key stored in HSM/Cloud KMS
-encryption:
-  key_rotation_days: 7
-  current_key_id: "k1"
-  keys:
-    k1: "ENCRYPTED_MASTER_KEY"  # Base64-encoded
+# API Keys & Secrets
+# IMPORTANT:
+# - Never commit real secrets to version control. Add this file to .gitignore.
+# - Recommended approaches: (A) load from environment variables, or (B) store encrypted
+#   values and provide a `decrypt_command` that the app uses at runtime.
 
+# Example A: Using environment variables (recommended for local dev)
+# Replace placeholders by setting environment variables in your shell or CI.
 services:
   coinbase_pro:
-    api_key: "U2FsdGVkX1+2Zx7v...o7x0fXqZQ=="
-    api_secret: "U2FsdGVkX1+9jJ...QY3uN2hw=="
-    passphrase: "U2FsdGVkX1+5V...m8zT4pA=="
-    decrypt_command: "openssl enc -d -aes-256-gcm -k ${ENV_MASTER_KEY}"
-  
+    api_key: "${COINBASE_API_KEY}"
+    api_secret: "${COINBASE_API_SECRET}"
+    passphrase: "${COINBASE_PASSPHRASE}"
+
+  # Example: Alpha Vantage using env var
   alpha_vantage:
-    api_key: "U2FsdGVkX1+8kD...bCwDp6g=="
-  
+    api_key: "${ALPHA_VANTAGE_API_KEY}"
+
+  # Example: Hugging Face model key
   hugging_face:
-    api_key: "U2FsdGVkX1+3mK...FqYtXw=="
+    api_key: "${HUGGING_FACE_API_KEY}"
     model: "finiteautomata/bertweet-base-sentiment-analysis"
-  
-  # Key rotation schedule
-  rotation:
-    last_rotated: 2023-06-15
-    next_rotation: 2023-06-22
+
+# Example B: Encrypted values (app must decrypt at startup)
+# - Store ciphertext here (base64), and set `decrypt_command` to a trusted tool
+#   that uses a KMS/HSM-provided key (do NOT hardcode the master key in this file).
+  binance:
+    api_key_encrypted: "ENCRYPTED_BASE64_API_KEY"
+    api_secret_encrypted: "ENCRYPTED_BASE64_API_SECRET"
+    decrypt_command: "openssl enc -d -aes-256-gcm -K $KMSTOOL_KEY -iv $KMSTOOL_IV"
+
+# Optional: metadata for rotation / vault integration
+encryption:
+  strategy: "env|kms|vault"  # choose one: env (env vars), kms (encrypted values), vault
+  key_rotation_days: 90
+  last_rotated: "2025-12-01"
+
+# Quick usage notes:
+# - To use env vars on PowerShell:
+#     $env:COINBASE_API_KEY = 'your_real_key'
+# - Or on CMD:
+#     set COINBASE_API_KEY=your_real_key
+# - For CI, configure secure secret variables in the pipeline and do NOT echo them.
+# - Add this file to .gitignore (if you store unencrypted secrets here).
+
+# End of file

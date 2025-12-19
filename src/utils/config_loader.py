@@ -1,7 +1,14 @@
 """
 Configuration loader utility
 """
-import toml
+try:
+    import toml
+except ImportError:
+    try:
+        import tomli as toml
+    except ImportError:
+        toml = None
+
 import yaml
 import os
 from dotenv import load_dotenv
@@ -14,9 +21,17 @@ class ConfigLoader:
     
     def load_toml(self, path: str) -> dict:
         """Load TOML configuration file"""
+        if toml is None:
+            return self._get_default_config(path)
+
         try:
-            with open(path, 'r') as f:
-                return toml.load(f)
+            # tomli requires a binary file object while toml (pypi) accepts text.
+            if getattr(toml, '__name__', '') == 'tomli':
+                with open(path, 'rb') as f:
+                    return toml.load(f)
+            else:
+                with open(path, 'r', encoding='utf-8') as f:
+                    return toml.load(f)
         except FileNotFoundError:
             # Return default configuration if file not found
             return self._get_default_config(path)

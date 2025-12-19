@@ -1,1 +1,4 @@
 *.pyc 
+# Local secrets
+config/api_keys.yml
+.env
